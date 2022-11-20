@@ -1,0 +1,39 @@
+name: Heating switch
+primary_entity:
+  entity: light
+  dps:
+    - id: 118
+      name: switch
+      type: boolean
+
+secondary_entities:
+  - entity: number
+    name: dps-103
+    category: config
+    dps:
+      - id: 103
+        name: value
+        type: integer
+        range:
+          min: 0
+          max: 100
+  - entity: number
+    name: dps-101
+    category: config
+    dps:
+      - id: 101
+        name: value
+        type: integer
+        range:
+          min: 0
+          max: 100
+  - entity: number
+    name: dps-102
+    category: config
+    dps:
+      - id: 102
+        name: value
+        type: integer
+        range:
+          min: 0
+          max: 100
