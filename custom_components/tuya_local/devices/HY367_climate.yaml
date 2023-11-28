@@ -1,0 +1,229 @@
+name: HY367 thermostat
+products:
+  - id: 2atgpdho
+    name: Zigbee HY367 thermostat
+primary_entity:
+  entity: climate
+  translation_key: thermostat
+  dps:
+    - id: 2
+      name: temperature
+      type: integer
+      range:
+        min: 10
+        max: 700
+      mapping:
+        - scale: 10
+          step: 5
+      unit: C
+    - id: 3
+      name: current_temperature
+      type: integer
+      readonly: true
+      range:
+        min: 10
+        max: 700
+      mapping:
+        - scale: 10
+      unit: C
+    - id: 4
+      name: preset_mode
+      type: string
+      mapping:
+        - dps_val: BOOST
+          value: boost
+        - dps_val: comfort
+          value: comfort
+        - dps_val: eco
+          value: eco
+        - dps_val: holiday
+          value: away
+        - dps_val: manual
+          value: manual
+        - dps_val: auto
+          value: program
+        - dps_val: manual
+          value: temp_override
+        - dps_val: holiday
+    - id: 102
+      name: min_temperature
+      type: integer
+      optional: true
+      range:
+        min: 1
+        max: 15
+      unit: C
+    - id: 103
+      name: max_temperature
+      type: integer
+      optional: true
+      range:
+        min: 15
+        max: 70
+      unit: C
+    - id: 106
+      type: string
+      name: hvac_mode
+      mapping:
+        - dps_val: "normal"
+          value: "auto"
+        - dps_val: "ForceOpen"
+          value: "heat"
+        - dps_val: "ForceClose"
+          value: "off"
+
+secondary_entities:
+  - entity: lock
+    name: Child lock
+    category: config
+    dps:
+      - id: 7
+        name: lock
+        type: boolean
+        optional: true
+  - entity: select
+    category: config
+    name: Energy saving temperature
+    icon: "mdi:calendar-sync"
+    dps:
+      - id: 111
+        type: integer
+        name: option
+        optional: true
+        mapping:
+          - dps_val: 0
+            value: "5+2"
+          - dps_val: 1
+            value: "6+1"
+          - dps_val: 2
+            value: "7"
+  - entity: number
+    category: config
+    name: Boost time
+    icon: mdi:sun-clock-outline
+    dps:
+      - id: 105
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 100
+          max: 900
+        mapping:
+          - step: 100
+        unit: s
+  - entity: number
+    category: config
+    name: Temperature calibration
+    icon: mdi:thermometer-plus
+    dps:
+      - id: 44
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: -90
+          max: 90
+        mapping:
+          - step: 10
+            scale: 10
+        unit: C
+  - entity: number
+    category: config
+    name: Comfort temperature
+    icon: mdi:sun-thermometer-outline
+    dps:
+      - id: 107
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 2
+          max: 23
+        unit: C
+  - entity: number
+    category: config
+    name: Energy saving temperature
+    icon: mdi:thermometer
+    dps:
+      - id: 108
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 2
+          max: 23
+        unit: C
+  - entity: switch
+    category: config
+    name: Open child lock automatically
+    icon: mdi:lock
+    dps:
+      - id: 116
+        type: boolean
+        name: switch
+        optional: true
+  - entity: number
+    name: Opened percentage
+    category: config
+    icon: mdi:gauge
+    dps:
+      - id: 109
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 0
+          max: 100
+        unit: "%"
+  - entity: number
+    name: unknown_13
+    dps:
+      - id: 13
+        type: integer
+        name: value
+        optional: true
+  - entity: binary_sensor
+    name: Low battery
+    class: battery
+    category: diagnostic
+    dps:
+      - id: 110
+        type: boolean
+        name: sensor
+        optional: true
+        mapping:
+          - default: "false"
+  - entity: number
+    name: Holiday mode temperature
+    icon: mdi:palm-tree
+    category: config
+    dps:
+      - id: 114
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 2
+          max: 23
+        unit: C
+  - entity: switch
+    name: unknown_115
+    dps:
+      - id: 115
+        type: boolean
+        optional: true
+        name: switch
+  - entity: number
+    name: Holiday days
+    icon: mdi:palm-tree
+    category: config
+    dps:
+      - id: 117
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 1
+          max: 30
+        unit: d
