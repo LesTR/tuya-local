@@ -14,7 +14,15 @@ primary_entity:
         max: 700
       mapping:
         - scale: 10
-          step: 5
+          step: 10
+          constraint: preset_mode
+          conditions:
+            - dps_val: comfort
+              value_redirect: comfort_temp
+            - dps_val: eco
+              value_redirect: eco_temp
+            - dps_val: holiday
+              value_redirect: away_temp
       unit: C
     - id: 3
       name: current_temperature
@@ -25,6 +33,7 @@ primary_entity:
         max: 700
       mapping:
         - scale: 10
+          step: 5
       unit: C
     - id: 4
       name: preset_mode
@@ -39,14 +48,13 @@ primary_entity:
         - dps_val: holiday
           value: away
         - dps_val: manual
-          value: manual
+          value: activity
         - dps_val: auto
-          value: program
+          value: home
         - dps_val: manual
-          value: temp_override
-        - dps_val: holiday
+          value: none
     - id: 102
-      name: min_temperature
+      name: min_temp
       type: integer
       optional: true
       range:
@@ -54,7 +62,7 @@ primary_entity:
         max: 15
       unit: C
     - id: 103
-      name: max_temperature
+      name: max_temp
       type: integer
       optional: true
       range:
@@ -65,25 +73,88 @@ primary_entity:
       type: string
       name: hvac_mode
       mapping:
-        - dps_val: "normal"
-          value: "auto"
-        - dps_val: "ForceOpen"
-          value: "heat"
-        - dps_val: "ForceClose"
+        - dps_val: normal
+          value: auto
+        - dps_val: ForceOpen
+          value: heat
+        - dps_val: ForceClose
           value: "off"
+    - id: 114
+      name: away_temp
+      type: integer
+      optional: true
+      range:
+        min: 2
+        max: 23
+      unit: C
+    - id: 107
+      name: comfort_temp
+      type: integer
+      optional: true
+      range:
+        min: 10
+        max: 25
+      unit: C
+    - id: 108
+      name: eco_temp
+      type: integer
+      optional: true
+      range:
+        min: 2
+        max: 23
+      unit: C
+    - id: 109
+      name: valve_open_percentage
+      type: integer
+      category: config
+      optional: true
+      icon: mdi:gauge
+      range:
+        min: 0
+        max: 100
+      unit: "%"
 
 secondary_entities:
   - entity: lock
     name: Child lock
     category: config
+    icon: "mdi:hand-back-right-off"
     dps:
       - id: 7
         name: lock
         type: boolean
         optional: true
+  - entity: number
+    name: Maximum temperature
+    category: config
+    icon: "mdi:thermometer-chevron-up"
+    dps:
+      - id: 103
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 15
+          max: 70
+        hidden: true
+        unit: C
+  - entity: number
+    name: Minimum temperature
+    category: config
+    icon: "mdi:thermometer-chevron-down"
+    dps:
+      - id: 102
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 1
+          max: 15
+        hidden: true
+        unit: C
   - entity: select
     category: config
-    name: Energy saving temperature
+    name: Energy saving
     icon: "mdi:calendar-sync"
     dps:
       - id: 111
@@ -130,19 +201,6 @@ secondary_entities:
         unit: C
   - entity: number
     category: config
-    name: Comfort temperature
-    icon: mdi:sun-thermometer-outline
-    dps:
-      - id: 107
-        type: integer
-        name: value
-        optional: true
-        range:
-          min: 2
-          max: 23
-        unit: C
-  - entity: number
-    category: config
     name: Energy saving temperature
     icon: mdi:thermometer
     dps:
@@ -150,9 +208,38 @@ secondary_entities:
         type: integer
         name: value
         optional: true
+        hidden: true
         range:
           min: 2
           max: 23
+        unit: C
+  - entity: number
+    category: config
+    name: Holiday temperature
+    icon: mdi:thermometer
+    dps:
+      - id: 114
+        type: integer
+        name: value
+        optional: true
+        hidden: true
+        range:
+          min: 2
+          max: 23
+        unit: C
+  - entity: number
+    category: config
+    name: Comfort temperature
+    icon: mdi:thermometer
+    dps:
+      - id: 107
+        type: integer
+        name: value
+        optional: true
+        hidden: true
+        range:
+          min: 10
+          max: 25
         unit: C
   - entity: switch
     category: config
@@ -163,19 +250,6 @@ secondary_entities:
         type: boolean
         name: switch
         optional: true
-  - entity: number
-    name: Opened percentage
-    category: config
-    icon: mdi:gauge
-    dps:
-      - id: 109
-        type: integer
-        name: value
-        optional: true
-        range:
-          min: 0
-          max: 100
-        unit: "%"
   - entity: number
     name: unknown_13
     dps:
@@ -194,21 +268,10 @@ secondary_entities:
         optional: true
         mapping:
           - default: "false"
-  - entity: number
-    name: Holiday mode temperature
-    icon: mdi:palm-tree
-    category: config
-    dps:
-      - id: 114
-        type: integer
-        name: value
-        optional: true
-        range:
-          min: 2
-          max: 23
-        unit: C
   - entity: switch
-    name: unknown_115
+    name: Window detection
+    category: config
+    icon: "mdi:window-open-variant"
     dps:
       - id: 115
         type: boolean
