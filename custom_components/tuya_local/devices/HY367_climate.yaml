@@ -14,15 +14,7 @@ primary_entity:
         max: 700
       mapping:
         - scale: 10
-          step: 10
-          constraint: preset_mode
-          conditions:
-            - dps_val: comfort
-              value_redirect: comfort_temp
-            - dps_val: eco
-              value_redirect: eco_temp
-            - dps_val: holiday
-              value_redirect: away_temp
+          step: 5
       unit: C
     - id: 3
       name: current_temperature
