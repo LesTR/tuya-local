@@ -1,6 +1,6 @@
-from homeassistant.components.climate import ClimateEntityFeature, HVACMode, \
-  HVACAction
-from homeassistant.const import PERCENTAGE, UnitOfTemperature, UnitOfTime
+import pytest
+from homeassistant.components.climate import ClimateEntityFeature, HVACMode
+from homeassistant.const import UnitOfTemperature, UnitOfTime
 
 from custom_components.tuya_local.helpers.device_config import TuyaDeviceConfig
 from tests.devices.base_device_tests import TuyaDeviceTestCase
@@ -9,7 +9,7 @@ from tests.mixins.climate import TargetTemperatureTests
 from tests.mixins.lock import BasicLockTests
 from tests.mixins.number import MultiNumberTests
 from tests.mixins.select import MultiSelectTests
-from tests.mixins.switch import BasicSwitchTests, MultiSwitchTests
+from tests.mixins.switch import MultiSwitchTests
 
 TARGET_TEMPERATURE_DPS = "2"
 CURRENT_TEMP_DPS = "3"
@@ -75,7 +75,7 @@ class TestHY376Climate(
         self.setUpForConfig(CFG_FILE, HY376_FULL_PAYLOAD)
         self.climate = self.entities.get("climate")
         self.setUpTargetTemperature(
-            TARGET_TEMPERATURE_DPS, self.climate, min=1.0, max=70.0, step=10, scale=10
+            TARGET_TEMPERATURE_DPS, self.climate, min=1.0, max=70.0, step=5, scale=10
         )
         self.setUpBasicLock(CHILD_LOCK_DPS, self.entities.get("lock_child_lock"))
         self.setUpMultiSelect(
@@ -221,12 +221,14 @@ class TestHY376Climate(
         self.dps[HVACMODE_DPS] = "ForceClose"
         self.assertEqual(self.climate.hvac_mode, HVACMode.OFF)
 
+    @pytest.mark.skip(reason="change temporarily reverted")
     def test_target_temperature_comfort(self):
         self.dps[TARGET_TEMPERATURE_DPS] = 10
         self.dps[PRESET_MODE_DPS] = "comfort"
         self.dps[COMFORT_TEMP_DPS] = 21
         self.assertEqual(self.climate.target_temperature, 21)
 
+    @pytest.mark.skip(reason="change temporarily reverted")
     async def test_set_target_temperature_in_comfort_mode(self):
         self.dps[PRESET_MODE_DPS] = "comfort"
 
@@ -235,6 +237,7 @@ class TestHY376Climate(
         ):
             await self.climate.async_set_target_temperature(15)
 
+    @pytest.mark.skip(reason="change temporarily reverted")
     async def test_set_target_temperature_in_eco_mode(self):
         self.dps[PRESET_MODE_DPS] = "eco"
 
@@ -243,6 +246,7 @@ class TestHY376Climate(
         ):
             await self.climate.async_set_target_temperature(12)
 
+    @pytest.mark.skip(reason="change temporarily reverted")
     async def test_set_target_temperature_in_away_mode(self):
         self.dps[PRESET_MODE_DPS] = "holiday"
 
