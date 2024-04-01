@@ -204,7 +204,9 @@ class TestHY376Climate(
     def test_supported_features(self):
         self.assertEqual(
             self.climate.supported_features,
-            ClimateEntityFeature.TARGET_TEMPERATURE | ClimateEntityFeature.PRESET_MODE,
+            ClimateEntityFeature.TARGET_TEMPERATURE
+            | ClimateEntityFeature.PRESET_MODE
+            | ClimateEntityFeature.TURN_OFF,
         )
 
     def test_match_minimal_payload(self):
