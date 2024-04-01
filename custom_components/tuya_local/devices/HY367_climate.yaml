@@ -4,7 +4,7 @@ products:
     name: Zigbee HY367 thermostat
 primary_entity:
   entity: climate
-  translation_key: thermostat
+  translation_only_key: heater
   dps:
     - id: 2
       name: temperature
@@ -98,9 +98,7 @@ primary_entity:
     - id: 109
       name: valve_open_percentage
       type: integer
-      category: config
       optional: true
-      icon: mdi:gauge
       range:
         min: 0
         max: 100
@@ -258,8 +256,6 @@ secondary_entities:
         type: boolean
         name: sensor
         optional: true
-        mapping:
-          - default: "false"
   - entity: switch
     name: Window detection
     category: config
